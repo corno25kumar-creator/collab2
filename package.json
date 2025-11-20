@@ -2,7 +2,8 @@
   "name": "collab2",
   "version": "1.0.0",
   "scripts": {
-    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "build": "cd frontend && npm install && npm run build",
     "start": "npm start --prefix backend"
-  }
+  },
+  "license": "ISC"
 }
