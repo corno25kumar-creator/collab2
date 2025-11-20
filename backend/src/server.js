@@ -1,27 +1,38 @@
-import express from "express"
-import {ENV} from "./lib/env.js"
-import path from "path"
+import express from "express";
+import { ENV } from "./lib/env.js";
+import path from "path";
+import { connectDb } from "./lib/db.js";
 
-const app = express()
+const app = express();
 
-const __dirname = path.resolve()
+const __dirname = path.resolve();
 
 app.get("/hat", (req, res) => {
-  res.status(200).json("hello hat" );
+  res.status(200).json("hello hat");
 });
 
 app.get("/books", (req, res) => {
-  res.status(200).json("hello books" );
+  res.status(200).json("hello books");
 });
 
-if(ENV.NODE_ENV === "production"){
-  app.use(express.static(path.join(__dirname, "../frontend/dist")))
+if (ENV.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-  app.get("/{*any}", (req, res)=>{
-  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"))
-  })
+  // ⬇ FIX: RegExp fallback route
+  app.get(/.*/, (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+  });
 }
 
-app.listen(ENV.PORT, ()=> {
-    console.log(`server ${ENV.PORT}`)
-})
+const startServer = async () => {
+  try {
+    await connectDb();
+    app.listen(ENV.PORT, () => {
+      console.log(`server ${ENV.PORT}`);
+    });
+  } catch (error) {
+    console.error("💥error in starting server", error);
+  }
+};
+
+startServer();
