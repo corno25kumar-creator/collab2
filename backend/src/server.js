@@ -19,7 +19,7 @@ app.use(cors({
    credentials:true
   }))
 
-  app.use("api/inngest", serve({client: inngest, functions}))
+  app.use("/api/inngest", serve({client: inngest, functions}))
 
 app.get("/hat", (req, res) => {
   res.status(200).json("hello hat");
