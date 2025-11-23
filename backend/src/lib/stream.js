@@ -1,6 +1,6 @@
 import {StreamChat} from 'stream-chat'
 import {ENV} from './env.js'
-import { err } from 'inngest/types'
+import {StreamClient} from '@stream-io/node-sdk'
 
 const apiKey = ENV.STREAM_API_KEY
 const apiSecret = ENV.STREAM_API_SECRET
@@ -8,6 +8,8 @@ const apiSecret = ENV.STREAM_API_SECRET
 if(!apiKey || !apiSecret){
     console.log("STREAM_API_KEY or STREAM_API_SECRET")
 }
+
+export const streamClient = new StreamClient(apiKey, apiSecret)
 export const chatClient = StreamChat.getInstance(apiKey, apiSecret);
 
 export const upperStreamUser = async(userData) => {

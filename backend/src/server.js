@@ -8,6 +8,7 @@ import { serve } from "inngest/express";
 import { functions, inngest } from "./lib/inngest.js";
 import { protectRoute } from "./middleware/protectRoute.js";
 import chatRoute from './routes/chatRoutes.js'
+import sessionRoutes from './routes/sessionRoutes.js'
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(cors({
 
   app.use("/api/inngest", serve({client: inngest, functions}))
   app.use("/api/chat", chatRoute)
+  app.use('/api/session', sessionRoutes)
 
 app.get("/hat", (req, res) => {
   res.status(200).json("hello hat");
