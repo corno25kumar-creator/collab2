@@ -2,9 +2,12 @@ import express from "express";
 import { ENV } from "./lib/env.js";
 import path from "path";
 import { connectDb } from "./lib/db.js";
+import {clerkMiddleware} from '@clerk/express'
 import cors from 'cors'
 import { serve } from "inngest/express";
 import { functions, inngest } from "./lib/inngest.js";
+import { protectRoute } from "./middleware/protectRoute.js";
+import chatRoute from './routes/chatRoutes.js'
 
 const app = express();
 
@@ -18,15 +21,22 @@ app.use(cors({
   origin:ENV.CLIENT_URL,
    credentials:true
   }))
+  app.use(clerkMiddleware())
 
   app.use("/api/inngest", serve({client: inngest, functions}))
+  app.use("/api/chat", chatRoute)
 
 app.get("/hat", (req, res) => {
   res.status(200).json("hello hat");
 });
 
 app.get("/books", (req, res) => {
+  req.auth;
   res.status(200).json("hello books");
+});
+
+app.get("/video-calls",protectRoute, (req, res) => {
+  res.status(200).json("hello vide0");
 });
 
 if (ENV.NODE_ENV === "production") {
