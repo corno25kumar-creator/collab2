@@ -5,5 +5,8 @@
     "build": "npm install --prefix backend && cd frontend && npm install && npm run build",
     "start": "npm start --prefix backend"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@tanstack/react-query": "^5.90.5"
+  }
 }
